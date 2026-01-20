@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '1.6.1'
+version: '1.7'
 platforms:
   amd64:
     build-on: [amd64]
@@ -10,17 +10,17 @@ description: |
   A launcher for games that run via Wine/Proton.
 grade: stable
 confinement: strict
+icon: zordeer.svg
 
 apps:
   zordeer:
     command: animarium/zordeer
     desktop: animarium/zordeer.desktop
     environment:
-      HOME: $SNAP_REAL_HOME
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
-      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/wine-kyu/usr/lib/i386-linux-gnu:$SNAP/wine-kyu/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/wine-kyu/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-      QT_PLUGIN_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
+      LD_LIBRARY_PATH: $SNAP/lxqt-support-core24/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/wine-kyu/usr/lib/i386-linux-gnu:$SNAP/wine-kyu/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/wine-kyu/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      QT_PLUGIN_PATH: $SNAP/lxqt-support-core24/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
       PATH: $SNAP/opt/wine-stable/bin:$PATH
     extensions: [kde-neon-6]
     plugs:
@@ -36,11 +36,11 @@ apps:
 plugs:
   shared-memory:
     private: true
-  lxqt-support:
-    content: lxqt-support
+  lxqt-support-core24:
+    content: lxqt-support-core24
     interface: content
-    target: $SNAP/lxqt-support
-    default-provider: lxqt-support
+    target: $SNAP/lxqt-support-core24
+    default-provider: lxqt-support-core24
   wine-kyu:
     content: wine-kyu
     interface: content
@@ -49,9 +49,9 @@ plugs:
 
 layout:
   /usr/share/color-schemes:
-    symlink: $SNAP/lxqt-support/usr/share/color-schemes
+    symlink: $SNAP/lxqt-support-core24/usr/share/color-schemes
   /usr/share/Kvantum:
-    symlink: $SNAP/lxqt-support/usr/share/Kvantum
+    symlink: $SNAP/lxqt-support-core24/usr/share/Kvantum
   /usr/lib/x86_64-linux-gnu/mangohud:
     symlink: $SNAP/usr/lib/x86_64-linux-gnu/mangohud
   /opt/wine-stable:
@@ -63,15 +63,13 @@ parts:
   zordeer-app:
     plugin: dump
     source: https://github.com/Kyuyrii/Zordeer.git
-    #source-tag: $SNAPCRAFT_PROJECT_VERSION
+    source-tag: $SNAPCRAFT_PROJECT_VERSION
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/animarium
       mv -f $CRAFT_PART_INSTALL/zordeer* $CRAFT_PART_INSTALL/animarium/
       mv -f $CRAFT_PART_INSTALL/translation $CRAFT_PART_INSTALL/animarium/
       sed -i 's|Name=Zordeer|Name=Zordeer [Snap]|' $CRAFT_PART_INSTALL/animarium/zordeer.desktop
-      sed -i 's|Exec=zordeer|Exec=${SNAP}/animarium/zordeer|' $CRAFT_PART_INSTALL/animarium/zordeer.desktop
-      sed -i 's|Icon=zordeer|Icon=${SNAP}/animarium/zordeer.svg|' $CRAFT_PART_INSTALL/animarium/zordeer.desktop
       sed -i 's|"Icon=zordeer"|"Icon=/snap/zordeer/current/animarium/zordeer.svg"|' $CRAFT_PART_INSTALL/animarium/zordeer
 #      sed -i 's|"umu_global": False,|"umu_global": True,|' $CRAFT_PART_INSTALL/animarium/zordeer
     prime:
@@ -133,7 +131,7 @@ parts:
     stage-packages: [udisks2]
 
   cleanup:
-    after: [zordeer-app, base-dependencies, gamemode, mangohud, udisks2]
+    after: [base-dependencies, gamemode, mangohud, udisks2]
     plugin: nil
     build-snaps:
       - mesa-2404
