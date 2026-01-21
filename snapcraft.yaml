@@ -46,6 +46,12 @@ plugs:
     interface: content
     target: $SNAP/wine-kyu
     default-provider: wine-kyu
+  dot-desktop-files:
+    interface: personal-files
+    write:
+      - $HOME/.config/menus/applications-merged
+      - $HOME/.local/share/applications
+      - $HOME/.local/share/desktop-directories
 
 layout:
   /usr/share/color-schemes:
