@@ -1,13 +1,13 @@
 name: zordeer
 base: core24
-version: '1.7.2'
+version: '1.7.4'
 platforms:
   amd64:
     build-on: [amd64]
     build-for: [amd64]
-summary: A launcher for games that run via Wine/Proton.
+summary: A launcher for games that run via Wine and Proton.
 description: |
-  A launcher for games that run via Wine/Proton.
+ A launcher for games that run via Wine and Proton.
 grade: stable
 confinement: strict
 icon: zordeer.svg
