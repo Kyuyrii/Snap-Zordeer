@@ -116,13 +116,14 @@ parts:
 
   mangohud:
     plugin: nil
-    stage-packages: [mangohud, libspdlog1.12]
+    stage-packages: [mangohud, libspdlog1.12, libfmt9]
     prime:
       - usr/bin/mangohud
       - usr/lib/x86_64-linux-gnu/mangohud/libMangoHud.so*
       - usr/lib/x86_64-linux-gnu/mangohud/libMangoHud_opengl.so*
       - usr/lib/x86_64-linux-gnu/mangohud/libMangoHud_shim.so*
       - usr/lib/x86_64-linux-gnu/libspdlog.so*
+      - usr/lib/x86_64-linux-gnu/libfmt.so*
       - usr/share/metainfo/io.github.flightlessmango.mangohud.metainfo.xml
       - usr/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
 
