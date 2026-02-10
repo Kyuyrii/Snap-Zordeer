@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '1.7.4.1'
+version: '1.7.5.1'
 platforms:
   amd64:
     build-on: [amd64]
@@ -19,8 +19,8 @@ apps:
     environment:
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
-      LD_LIBRARY_PATH: $SNAP/lxqt-support-core24/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/wine-kyu/usr/lib/i386-linux-gnu:$SNAP/wine-kyu/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/wine-kyu/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-      QT_PLUGIN_PATH: $SNAP/lxqt-support-core24/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
+      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/wine-kyu/usr/lib/i386-linux-gnu:$SNAP/wine-kyu/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/wine-kyu/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      QT_PLUGIN_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
       PATH: $SNAP/opt/wine-stable/bin:$PATH
     extensions: [kde-neon-6]
     plugs:
@@ -39,7 +39,7 @@ plugs:
   lxqt-support-core24:
     content: lxqt-support-core24
     interface: content
-    target: $SNAP/lxqt-support-core24
+    target: $SNAP/lxqt-support
     default-provider: lxqt-support-core24
   wine-kyu:
     content: wine-kyu
@@ -48,10 +48,8 @@ plugs:
     default-provider: wine-kyu
 
 layout:
-  /usr/share/color-schemes:
-    symlink: $SNAP/lxqt-support-core24/usr/share/color-schemes
   /usr/share/Kvantum:
-    symlink: $SNAP/lxqt-support-core24/usr/share/Kvantum
+    symlink: $SNAP/lxqt-support/usr/share/Kvantum
   /usr/lib/x86_64-linux-gnu/mangohud:
     symlink: $SNAP/usr/lib/x86_64-linux-gnu/mangohud
   /opt/wine-stable:
