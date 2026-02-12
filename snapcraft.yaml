@@ -10,7 +10,7 @@ description: |
  A launcher for games that run via Wine/Proton.
 grade: stable
 confinement: strict
-icon: zordeer.svg
+icon: io.github.kyuyrii.zordeer.svg
 
 apps:
   zordeer:
