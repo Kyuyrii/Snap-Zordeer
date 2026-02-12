@@ -1,13 +1,13 @@
 name: zordeer
 base: core24
-version: '1.7.5.1'
+version: '1.7.6'
 platforms:
   amd64:
     build-on: [amd64]
     build-for: [amd64]
-summary: A launcher for games that run via Wine and Proton.
+summary: A launcher for games that run via Wine/Proton.
 description: |
- A launcher for games that run via Wine and Proton.
+ A launcher for games that run via Wine/Proton.
 grade: stable
 confinement: strict
 icon: zordeer.svg
@@ -15,13 +15,14 @@ icon: zordeer.svg
 apps:
   zordeer:
     command: animarium/zordeer
-    desktop: animarium/zordeer.desktop
+    desktop: animarium/io.github.kyuyrii.zordeer.desktop
+    common-id: io.github.kyuyrii.zordeer
     environment:
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
-      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/wine-kyu/usr/lib/i386-linux-gnu:$SNAP/wine-kyu/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/wine-kyu/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/opt/wine-stable/lib/wine/i386-unix:$SNAP/winehq/usr/lib/i386-linux-gnu:$SNAP/winehq/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/opt/wine-stable/lib/wine/x86_64-unix:$SNAP/winehq/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
       QT_PLUGIN_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
-      PATH: $SNAP/opt/wine-stable/bin:$PATH
+      PATH: $SNAP/opt/wine-stable/bin:$SNAP/winehq/usr/bin:$PATH
     extensions: [kde-neon-6]
     plugs:
       - network-status
@@ -41,10 +42,10 @@ plugs:
     interface: content
     target: $SNAP/lxqt-support
     default-provider: lxqt-support-core24
-  wine-kyu:
-    content: wine-kyu
+  winehq:
+    content: winehq
     interface: content
-    target: $SNAP/wine-kyu
+    target: $SNAP/winehq
     default-provider: wine-kyu
 
 layout:
@@ -53,9 +54,9 @@ layout:
   /usr/lib/x86_64-linux-gnu/mangohud:
     symlink: $SNAP/usr/lib/x86_64-linux-gnu/mangohud
   /opt/wine-stable:
-    symlink: $SNAP/wine-kyu/opt/wine-stable
+    symlink: $SNAP/winehq/opt/wine-stable
   /usr/bin/wine:
-    symlink: $SNAP/wine-kyu/opt/wine-stable/bin/wine
+    symlink: $SNAP/winehq/opt/wine-stable/bin/wine
 
 parts:
   zordeer-app:
@@ -64,12 +65,14 @@ parts:
 #    source-tag: $SNAPCRAFT_PROJECT_VERSION
     override-build: |
       craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/animarium
-      mv -f $CRAFT_PART_INSTALL/zordeer* $CRAFT_PART_INSTALL/animarium/
-      mv -f $CRAFT_PART_INSTALL/translation $CRAFT_PART_INSTALL/animarium/
-      sed -i 's|Name=Zordeer|Name=Zordeer [Snap]|' $CRAFT_PART_INSTALL/animarium/zordeer.desktop
-      sed -i 's|"Icon=zordeer"|"Icon=/snap/zordeer/current/animarium/zordeer.svg"|' $CRAFT_PART_INSTALL/animarium/zordeer
+      sed -i 's|Name=Zordeer|Name=Zordeer [Snap]|' $CRAFT_PART_INSTALL/io.github.kyuyrii.zordeer.desktop
+      sed -i 's|"Icon=io.github.kyuyrii.zordeer"|"Icon=/snap/zordeer/current/animarium/io.github.kyuyrii.zordeer.svg"|' $CRAFT_PART_INSTALL/zordeer
 #      sed -i 's|"umu_global": False,|"umu_global": True,|' $CRAFT_PART_INSTALL/animarium/zordeer
+    organize:
+      zordeer: animarium/zordeer
+      io.github.kyuyrii.zordeer.desktop: animarium/io.github.kyuyrii.zordeer.desktop
+      io.github.kyuyrii.zordeer.svg: animarium/io.github.kyuyrii.zordeer.svg
+      translation: animarium/translation
     prime:
       - animarium
 
