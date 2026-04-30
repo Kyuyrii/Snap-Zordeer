@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '6.5'
+version: '6.6'
 adopt-info: zordeer-app
 platforms:
   amd64:
@@ -12,18 +12,17 @@ icon: io.github.kyuyrii.zordeer.png
 
 apps:
   zordeer:
-    command-chain: [define-variables]
-    command: animarium/zordeer
-    desktop: animarium/io.github.kyuyrii.zordeer.desktop
+    command-chain: [snap/command-chain/define-variables]
+    command: usr/bin/zordeer
+    desktop: usr/share/applications/io.github.kyuyrii.zordeer.desktop
     common-id: io.github.kyuyrii.zordeer
     environment:
       HOME: $SNAP_USER_COMMON
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
-      PATH: $SNAP/opt/wine-stable/bin:$SNAP/winehq/usr/bin:$PATH
-      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/winehq/usr/lib/i386-linux-gnu:$SNAP/winehq/usr/lib/i386-linux-gnu/pulseaudio:$SNAP/winehq/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$LD_LIBRARY_PATH
       QT_PLUGIN_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
-      ZORDEER_DISABLE_UMU: '1'
+      ZORDEER_DISABLE_UMU: "1"
     extensions: [kde-neon-6]
     plugs:
       - network-status
@@ -48,36 +47,25 @@ plugs:
     default-provider: wine-kyu
 
 layout:
-  /opt/wine-stable:
-    symlink: $SNAP/winehq/opt/wine-stable
   /usr/lib/i386-linux-gnu/alsa-lib:
     symlink: $SNAP/winehq/usr/lib/i386-linux-gnu/alsa-lib
   /usr/lib/x86_64-linux-gnu/alsa-lib:
     symlink: $SNAP/winehq/usr/lib/x86_64-linux-gnu/alsa-lib
-  /usr/share/alsa:
-    bind: $SNAP/winehq/usr/share/alsa
   /usr/lib/mangohud:
-    symlink: $SNAP/usr/lib/mangohud
-
-lint:
-  ignore:
-    - library:
-        - usr/lib/mangohud/lib32/**
+    symlink: $SNAP/winehq/usr/lib/mangohud
 
 parts:
   zordeer-app:
-    plugin: dump
+    plugin: nil
     source: https://github.com/Kyuyrii/Zordeer.git
     source-tag: $SNAPCRAFT_PROJECT_VERSION
     parse-info: [metainfo/io.github.kyuyrii.zordeer.metainfo.xml]
-    organize:
-      zordeer: animarium/zordeer
-      io.github.kyuyrii.zordeer.desktop: animarium/io.github.kyuyrii.zordeer.desktop
-      io.github.kyuyrii.zordeer.svg: animarium/io.github.kyuyrii.zordeer.svg
-      translation: animarium/translation
-      LICENSE: animarium/LICENSE
-    prime:
-      - animarium
+    override-pull: |
+      craftctl default
+      install -Dm755 zordeer $CRAFT_PART_INSTALL/usr/bin/zordeer
+      install -Dm644 io.github.kyuyrii.zordeer.desktop $CRAFT_PART_INSTALL/usr/share/applications/io.github.kyuyrii.zordeer.desktop
+      install -Dm644 metainfo/io.github.kyuyrii.zordeer.metainfo.xml $CRAFT_PART_INSTALL/usr/share/metainfo/io.github.kyuyrii.zordeer.metainfo.xml
+      install -Dm644 translation/*.toml -t $CRAFT_PART_INSTALL/usr/share/Zordeer/translation
 
   base-dependencies:
     plugin: nil
@@ -86,24 +74,12 @@ parts:
       - python3-requests
       - python3-psutil
       - python3-tomlkit
-      - libsdl2-2.0-0
-      - libdecor-0-0
     prime:
       - usr/lib/python3/dist-packages
-      - usr/lib/x86_64-linux-gnu/libSDL2-2.0.so*
-      - usr/lib/x86_64-linux-gnu/libdecor-0.so*
-
-  mangohud:
-    after: [base-dependencies]
-    plugin: dump
-    source: https://github.com/flightlessmango/MangoHud/releases/download/v0.8.2/MangoHud-0.8.2.r0.ga37b007.tar.gz
-    override-build: |
-      craftctl default
-      tar -xvf MangoHud-package.tar -C $CRAFT_PART_INSTALL
-      sed -i 's|MANGOHUD_LIB_NAME="/usr/lib/mangohud/\\$LIB/libMangoHud_shim.so"|MANGOHUD_LIB_NAME="/usr/lib/mangohud/lib64/libMangoHud_shim.so"|' $CRAFT_PART_INSTALL/usr/bin/mangohud
-    prime: [usr]
 
   other-files:
-    after: [mangohud]
+    after: [base-dependencies]
     plugin: dump
     source: ./other-files
+    organize:
+      define-variables: snap/command-chain/define-variables
