@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '6.8'
+version: '6.9'
 adopt-info: zordeer-app
 platforms:
   amd64:
