@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '7.3'
+version: '8.0'
 adopt-info: zordeer-app
 platforms:
   amd64:
@@ -20,9 +20,8 @@ apps:
       HOME: $SNAP_USER_COMMON
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
-      LD_LIBRARY_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$LD_LIBRARY_PATH
-      QT_PLUGIN_PATH: $SNAP/lxqt-support/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins:$QT_PLUGIN_PATH
       ZORDEER_DISABLE_UMU: "1"
+      PROTON_USE_WOW64: "1"
     extensions: [kde-neon-6]
     plugs:
       - network-status
@@ -40,19 +39,19 @@ apps:
 plugs:
   shared-memory:
     private: true
-  winehq:
-    content: winehq
+  winehq-stable:
+    content: winehq-stable
     interface: content
-    target: $SNAP/winehq
+    target: $SNAP/winehq-stable
     default-provider: wine-kyu
 
 layout:
   /usr/lib/i386-linux-gnu/alsa-lib:
-    symlink: $SNAP/winehq/usr/lib/i386-linux-gnu/alsa-lib
+    symlink: $SNAP/winehq-stable/usr/lib/i386-linux-gnu/alsa-lib
   /usr/lib/x86_64-linux-gnu/alsa-lib:
-    symlink: $SNAP/winehq/usr/lib/x86_64-linux-gnu/alsa-lib
+    symlink: $SNAP/winehq-stable/usr/lib/x86_64-linux-gnu/alsa-lib
   /usr/lib/mangohud:
-    symlink: $SNAP/winehq/usr/lib/mangohud
+    symlink: $SNAP/winehq-stable/usr/lib/mangohud
 
 parts:
   zordeer-app:
