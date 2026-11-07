@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '8.0'
+version: '8.1'
 adopt-info: zordeer-app
 platforms:
   amd64:
@@ -12,7 +12,7 @@ icon: io.github.kyuyrii.zordeer.png
 
 apps:
   zordeer:
-    command-chain: [snap/command-chain/define-variables]
+    command-chain: [define-variables]
     command: usr/bin/zordeer
     desktop: usr/share/applications/io.github.kyuyrii.zordeer.desktop
     common-id: io.github.kyuyrii.zordeer
@@ -80,5 +80,3 @@ parts:
     after: [base-dependencies]
     plugin: dump
     source: ./other-files
-    organize:
-      define-variables: snap/command-chain/define-variables
