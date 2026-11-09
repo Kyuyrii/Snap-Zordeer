@@ -12,7 +12,7 @@ icon: io.github.kyuyrii.zordeer.png
 
 apps:
   zordeer:
-    command-chain: [define-variables]
+    command-chain: [define-variables, gatchnnect]
     command: usr/bin/zordeer
     desktop: usr/share/applications/io.github.kyuyrii.zordeer.desktop
     common-id: io.github.kyuyrii.zordeer
@@ -73,10 +73,24 @@ parts:
       - python3-requests
       - python3-psutil
       - python3-tomlkit
+    prime: [usr/lib/python3/dist-packages]
+
+  gatchnnect:
+    after: [base-dependencies]
+    plugin: dump
+    source: https://github.com/Kyuyrii/Gatchnnect.git
+    stage-snaps:
+      - kdialog
+    override-build: |
+      craftctl default
+      sed -i 's/^REQUIRED_PLUGS=.*/REQUIRED_PLUGS="joystick removable-media mount-observe bluez udisks2 system-observe hardware-observe"/' $CRAFT_PART_INSTALL/gatchnnect
+      mv LICENSE $CRAFT_PART_INSTALL/LICENCE-Gatchnnect
+    organize:
+      LICENCE-Gatchnnect: meta/LICENCE-Gatchnnect
     prime:
-      - usr/lib/python3/dist-packages
+      - -README.md
 
   other-files:
-    after: [base-dependencies]
+    after: [gatchnnect]
     plugin: dump
     source: ./other-files
