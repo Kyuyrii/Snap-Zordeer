@@ -39,19 +39,10 @@ apps:
 plugs:
   shared-memory:
     private: true
-  winehq-stable:
-    content: winehq-stable
-    interface: content
-    target: $SNAP/winehq-stable
-    default-provider: wine-kyu
 
 layout:
-  /usr/lib/i386-linux-gnu/alsa-lib:
-    symlink: $SNAP/winehq-stable/usr/lib/i386-linux-gnu/alsa-lib
-  /usr/lib/x86_64-linux-gnu/alsa-lib:
-    symlink: $SNAP/winehq-stable/usr/lib/x86_64-linux-gnu/alsa-lib
   /usr/lib/mangohud:
-    symlink: $SNAP/winehq-stable/usr/lib/mangohud
+    symlink: $SNAP/usr/lib/mangohud
 
 parts:
   zordeer-app:
@@ -67,6 +58,7 @@ parts:
       install -Dm644 translation/*.toml -t $CRAFT_PART_INSTALL/usr/share/Zordeer/translation
 
   base-dependencies:
+    after: [zordeer-app]
     plugin: nil
     stage-packages:
       - python3-pyqt6
@@ -75,8 +67,21 @@ parts:
       - python3-tomlkit
     prime: [usr/lib/python3/dist-packages]
 
-  gatchnnect:
+  mangohud:
     after: [base-dependencies]
+    plugin: dump
+    source: https://github.com/flightlessmango/MangoHud/releases/download/v0.8.4/MangoHud-0.8.4.r0.g992103e.tar.gz
+    override-build: |
+      craftctl default
+      tar -xvf MangoHud-package.tar -C $CRAFT_PART_INSTALL
+      sed -i 's|MANGOHUD_LIB_NAME="/usr/lib/mangohud/\\$LIB/libMangoHud_shim.so"|MANGOHUD_LIB_NAME="/usr/lib/mangohud/lib64/libMangoHud_shim.so"|' $CRAFT_PART_INSTALL/usr/bin/mangohud
+    prime:
+      - usr/bin
+      - usr/lib/mangohud/lib64
+      - usr/share
+
+  gatchnnect:
+    after: [mangohud]
     plugin: dump
     source: https://github.com/Kyuyrii/Gatchnnect.git
     stage-snaps:
