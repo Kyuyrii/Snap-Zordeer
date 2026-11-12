@@ -75,32 +75,4 @@ parts:
   other-files:
     after: [base-dependencies]
     plugin: dump
-    source: https://github.com/flightlessmango/MangoHud/releases/download/v0.8.4/MangoHud-0.8.4.r0.g992103e.tar.gz
-    override-build: |
-      craftctl default
-      tar -xvf MangoHud-package.tar -C $CRAFT_PART_INSTALL
-      sed -i 's|MANGOHUD_LIB_NAME="/usr/lib/mangohud/\\$LIB/libMangoHud_shim.so"|MANGOHUD_LIB_NAME="/usr/lib/mangohud/lib64/libMangoHud_shim.so"|' $CRAFT_PART_INSTALL/usr/bin/mangohud
-    prime:
-      - usr/bin
-      - usr/lib/mangohud/lib64
-      - usr/share
-
-  gatchnnect:
-    after: [mangohud]
-    plugin: dump
-    source: https://github.com/Kyuyrii/Gatchnnect.git
-    stage-snaps:
-      - kdialog
-    override-build: |
-      craftctl default
-      sed -i 's/^REQUIRED_PLUGS=.*/REQUIRED_PLUGS="joystick removable-media mount-observe bluez udisks2 system-observe hardware-observe"/' $CRAFT_PART_INSTALL/gatchnnect
-      mv LICENSE $CRAFT_PART_INSTALL/LICENCE-Gatchnnect
-    organize:
-      LICENCE-Gatchnnect: meta/LICENCE-Gatchnnect
-    prime:
-      - -README.md
-
-  other-files:
-    after: [gatchnnect]
-    plugin: dump
     source: ./other-files
