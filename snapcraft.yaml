@@ -12,7 +12,7 @@ icon: io.github.kyuyrii.zordeer.png
 
 apps:
   zordeer:
-    command-chain: [define-variables, gatchnnect]
+    command-chain: [define-variables]
     command: usr/bin/zordeer
     desktop: usr/share/applications/io.github.kyuyrii.zordeer.desktop
     common-id: io.github.kyuyrii.zordeer
@@ -39,10 +39,15 @@ apps:
 plugs:
   shared-memory:
     private: true
+  zordeer-runtime:
+    content: zordeer-runtime
+    interface: content
+    target: $SNAP/zordeer-runtime
+    default-provider: zordeer-runtime
 
 layout:
   /usr/lib/mangohud:
-    symlink: $SNAP/usr/lib/mangohud
+    symlink: $SNAP/zordeer-runtime/usr/lib/mangohud
 
 parts:
   zordeer-app:
@@ -67,7 +72,7 @@ parts:
       - python3-tomlkit
     prime: [usr/lib/python3/dist-packages]
 
-  mangohud:
+  other-files:
     after: [base-dependencies]
     plugin: dump
     source: https://github.com/flightlessmango/MangoHud/releases/download/v0.8.4/MangoHud-0.8.4.r0.g992103e.tar.gz
