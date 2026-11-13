@@ -22,8 +22,8 @@ apps:
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       ZORDEER_DISABLE_UMU: "1"
       PROTON_USE_WOW64: "1"
-      BWRAP: $SNAP/usr/bin/bwrap
-      PRESSURE_VESSEL_BWRAP: $SNAP/usr/bin/bwrap
+      BWRAP: $SNAP/bin/bwrap
+      PRESSURE_VESSEL_BWRAP: $SNAP/bin/bwrap
     extensions: [kde-neon-6]
     plugs:
       - network-status
@@ -80,11 +80,11 @@ parts:
     build-packages: [curl]
     override-build: |
       craftctl default
-      mkdir -p "$CRAFT_PART_INSTALL/usr/bin"
-      curl -fsSL -o "$CRAFT_PART_INSTALL/usr/bin/proot" \
+      mkdir -p "$CRAFT_PART_INSTALL/bin"
+      curl -fsSL -o "$CRAFT_PART_INSTALL/bin/proot" \
         "https://github.com/selkies-project/proot-next/releases/download/0.3.9/proot-$(uname -m)"
-      chmod +x "$CRAFT_PART_INSTALL/usr/bin/proot"
-      ln -sf proot "$CRAFT_PART_INSTALL/usr/bin/bwrap"
+      chmod +x "$CRAFT_PART_INSTALL/bin/proot"
+      ln -sf proot "$CRAFT_PART_INSTALL/bin/bwrap"
 
   other-files:
     after: [base-dependencies]
