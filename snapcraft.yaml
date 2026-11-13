@@ -1,6 +1,6 @@
 name: zordeer
 base: core24
-version: '8.2'
+version: '8.3'
 adopt-info: zordeer-app
 platforms:
   amd64:
@@ -57,12 +57,8 @@ parts:
     source: https://github.com/Kyuyrii/Zordeer.git
     source-tag: $SNAPCRAFT_PROJECT_VERSION
     parse-info: [metainfo/io.github.kyuyrii.zordeer.metainfo.xml]
-    override-pull: |
-      craftctl default
-      install -Dm755 zordeer $CRAFT_PART_INSTALL/usr/bin/zordeer
-      install -Dm644 io.github.kyuyrii.zordeer.desktop $CRAFT_PART_INSTALL/usr/share/applications/io.github.kyuyrii.zordeer.desktop
-      install -Dm644 metainfo/io.github.kyuyrii.zordeer.metainfo.xml $CRAFT_PART_INSTALL/usr/share/metainfo/io.github.kyuyrii.zordeer.metainfo.xml
-      install -Dm644 translation/*.toml -t $CRAFT_PART_INSTALL/usr/share/Zordeer/translation
+    make-parameters:
+      - PREFIX=/usr
 
   base-dependencies:
     after: [zordeer-app]
