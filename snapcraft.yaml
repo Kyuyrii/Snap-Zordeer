@@ -47,6 +47,8 @@ plugs:
     default-provider: zordeer-runtime
 
 layout:
+  /usr/share/alsa:
+    symlink: $SNAP/kf6/usr/share/alsa
   /usr/lib/mangohud:
     symlink: $SNAP/zordeer-runtime/usr/lib/mangohud
 
