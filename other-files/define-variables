@@ -1,8 +1,0 @@
-#!/bin/bash
-
-export PATH="$PATH:$SNAP/zordeer-runtime/usr/bin:$SNAP/zordeer-runtime/usr/bin"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SNAP/zordeer-runtime/usr/lib/x86_64-linux-gnu"
-export GST_PLUGIN_SYSTEM_PATH="$GST_PLUGIN_SYSTEM_PATH:$SNAP/zordeer-runtime/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
-export XDG_DATA_DIRS="$XDG_DATA_DIRS:$SNAP/zordeer-runtime/usr/share"
-
-exec "$@"
