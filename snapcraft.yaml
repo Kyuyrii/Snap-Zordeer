@@ -1,6 +1,6 @@
 name: zordeer
 base: core26
-version: '10.2'
+version: '11.0'
 adopt-info: zordeer
 platforms:
   amd64:
